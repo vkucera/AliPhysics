@@ -62,6 +62,7 @@ public:
     kCascades,
     kTOF,
     kMcParticle,
+    kMcDaughter,
     kMcCollision,
     kMcTrackLabel,
     kMcCaloLabel,
@@ -325,6 +326,12 @@ private:
     Float_t fVt = -999.f; /// t of production vertex
     // We do not use the polarisation so far
   } mcparticle;  //! MC particles from the kinematics tree
+
+  struct {
+    // MC particle and its daughter
+    Int_t fParticleID  = -1; /// Index of the particle
+    Int_t fDaughterID  = -1; /// Index of the daughter particle
+  } mcparticledaughter;
 
   // To test the compilation uncoment the line below
   // #define USE_TOF_CLUST 1
