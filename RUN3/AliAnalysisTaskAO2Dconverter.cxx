@@ -1543,23 +1543,25 @@ void AliAnalysisTaskAO2Dconverter::FillEventInTF()
       if (fTreeStatus[kMcParticle]) nkine_filled++;
 
       mcparticledaughter.fParticleID = i + fOffsetLabel;
+      Int_t indexDaughterFirst = particle->GetFirstDaughter();
+      Int_t indexDaughterLast = particle->GetLastDaughter();
       // First daughter
-      if (mcparticle.fDaughter0 > -1) {
-        mcparticledaughter.fDaughterID = mcparticle.fDaughter0;
+      if (indexDaughterFirst > -1) {
+        mcparticledaughter.fDaughterID = indexDaughterFirst + fOffsetLabel;
         FillTree(kMcDaughter);
         if (fTreeStatus[kMcDaughter]) ndaug_filled++;
       }
       // Intermediate daughters
-      if (mcparticle.fDaughter0 > -1 && mcparticle.fDaughter1 > -1) {
-        for (Int_t iD = 1; iD < mcparticle.fDaughter1 - mcparticle.fDaughter0; iD++) {
-          mcparticledaughter.fDaughterID = mcparticle.fDaughter0 + iD;
+      if (indexDaughterFirst > -1 && indexDaughterLast > -1) {
+        for (Int_t iD = 1; iD < indexDaughterLast - indexDaughterFirst; iD++) {
+          mcparticledaughter.fDaughterID = indexDaughterFirst + fOffsetLabel + iD;
           FillTree(kMcDaughter);
           if (fTreeStatus[kMcDaughter]) ndaug_filled++;
         }
       }
       // Last daughter
-      if (mcparticle.fDaughter1 > -1) {
-        mcparticledaughter.fDaughterID = mcparticle.fDaughter1;
+      if (indexDaughterLast > -1) {
+        mcparticledaughter.fDaughterID = indexDaughterLast + fOffsetLabel;
         FillTree(kMcDaughter);
         if (fTreeStatus[kMcDaughter]) ndaug_filled++;
       }
