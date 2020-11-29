@@ -1553,14 +1553,14 @@ void AliAnalysisTaskAO2Dconverter::FillEventInTF()
       }
       // Intermediate daughters
       if (indexDaughterFirst > -1 && indexDaughterLast > -1) {
-        for (Int_t iD = 1; iD < indexDaughterLast - indexDaughterFirst; iD++) {
-          mcparticledaughter.fDaughterID = indexDaughterFirst + fOffsetLabel + iD;
+        for (Int_t iD = indexDaughterFirst + 1; iD < indexDaughterLast; iD++) {
+          mcparticledaughter.fDaughterID = iD + fOffsetLabel;
           FillTree(kMcDaughter);
           if (fTreeStatus[kMcDaughter]) ndaug_filled++;
         }
       }
       // Last daughter
-      if (indexDaughterLast > -1) {
+      if (indexDaughterLast > -1 && indexDaughterLast != indexDaughterFirst) {
         mcparticledaughter.fDaughterID = indexDaughterLast + fOffsetLabel;
         FillTree(kMcDaughter);
         if (fTreeStatus[kMcDaughter]) ndaug_filled++;
