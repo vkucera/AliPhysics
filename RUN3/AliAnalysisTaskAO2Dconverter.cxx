@@ -67,7 +67,7 @@
 
 ClassImp(AliAnalysisTaskAO2Dconverter);
 
-const TString AliAnalysisTaskAO2Dconverter::TreeName[kTrees] = { "O2collision", "DbgEventExtra", "O2track", "O2calo",  "O2calotrigger", "O2muon", "O2muoncluster", "O2zdc", "O2fv0a", "O2fv0c", "O2ft0", "O2fdd", "O2v0", "O2cascade", "O2tof", "O2mcparticle", "O2mcparticledaughter", "O2mccollision", "O2mctracklabel", "O2mccalolabel", "O2mccollisionlabel", "O2bc" };
+const TString AliAnalysisTaskAO2Dconverter::TreeName[kTrees] = { "O2collision", "DbgEventExtra", "O2track", "O2calo",  "O2calotrigger", "O2muon", "O2muoncluster", "O2zdc", "O2fv0a", "O2fv0c", "O2ft0", "O2fdd", "O2v0", "O2cascade", "O2tof", "O2mcparticle", "O2mcmothdaught", "O2mccollision", "O2mctracklabel", "O2mccalolabel", "O2mccollisionlabel", "O2bc" };
 
 const TString AliAnalysisTaskAO2Dconverter::TreeTitle[kTrees] = { "Collision tree", "Collision extra", "Barrel tracks", "Calorimeter cells", "Calorimeter triggers", "MUON tracks", "MUON clusters", "ZDC", "FV0A", "FV0C", "FT0", "FDD", "V0s", "Cascades", "TOF hits", "Kinematics", "MC daughters", "MC collisions", "MC track labels", "MC calo labels", "MC collision labels", "BC info" };
 
