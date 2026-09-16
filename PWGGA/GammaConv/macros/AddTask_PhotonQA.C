@@ -12,7 +12,7 @@ void AddTask_PhotonQA(
   Bool_t    doEtaShiftV0Reader            = kFALSE,
   Bool_t    enableV0findingEffi           = kFALSE,              // enables V0finding efficiency histograms
   TString   fileNameExternalInputs        = "",
-  Bool_t    enableElecDeDxPostCalibration = kFALSE
+  Int_t     enableElecDeDxPostCalibration = 0       // 0 = off, 1 = as function of TPC clusters, 2 = as function of convR (requires FEPC)
   ){
  
   AliCutHandlerPCM cuts;
@@ -52,17 +52,30 @@ void AddTask_PhotonQA(
 
   AliConversionPhotonCuts *analysisCuts = new AliConversionPhotonCuts();
   analysisCuts->SetV0ReaderName(V0ReaderName);
+  if (enableElecDeDxPostCalibration < 0 || enableElecDeDxPostCalibration > 2){
+    cout << "ERROR enableElecDeDxPostCalibration must be 0, 1, or 2" << endl;
+    return;
+  }
   if (enableElecDeDxPostCalibration){
     if (isMC == 0){
       if(fileNamedEdxPostCalib.CompareTo("") != 0){
-        analysisCuts->SetElecDeDxPostCalibrationCustomFile(fileNamedEdxPostCalib);
+        if (enableElecDeDxPostCalibration == 2){
+          analysisCuts->ForceTPCRecalibrationAsFunctionOfConvR();
+        }
         cout << "Setting custom dEdx recalibration file: " << fileNamedEdxPostCalib.Data() << endl;
-     }
-      analysisCuts->SetDoElecDeDxPostCalibration(enableElecDeDxPostCalibration);
+        if (!analysisCuts->InitializeElecDeDxPostCalibration(fileNamedEdxPostCalib)){
+          cout << "ERROR: Failed to initialize custom TPC dEdx recalibration file" << endl;
+          return;
+        }
+      } else if (enableElecDeDxPostCalibration == 2){
+        cout << "ERROR: Radius-dependent TPC dEdx recalibration requires an FEPC file" << endl;
+        return;
+      }
+      analysisCuts->SetDoElecDeDxPostCalibration(kTRUE);
       cout << "Enabled TPC dEdx recalibration." << endl;
     } else{
       cout << "ERROR enableElecDeDxPostCalibration set to True even if MC file. Automatically reset to 0"<< endl;
-      enableElecDeDxPostCalibration=kFALSE;
+      enableElecDeDxPostCalibration=0;
       analysisCuts->SetDoElecDeDxPostCalibration(kFALSE);
     }
   }
@@ -96,4 +109,3 @@ void AddTask_PhotonQA(
   //connect containers
   return;
 }
-
